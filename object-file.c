@@ -481,7 +481,7 @@ int odb_mkstemp(struct strbuf *temp_filename, const char *pattern)
 	 * we let the umask do its job, don't try to be more
 	 * restrictive except to remove write permission.
 	 */
-	int mode = 0444;
+	int mode = 0666;
 	git_path_buf(temp_filename, "objects/%s", pattern);
 	fd = git_mkstemp_mode(temp_filename->buf, mode);
 	if (0 <= fd)
@@ -2175,7 +2175,7 @@ static int create_tmpfile(struct strbuf *tmp, const char *filename)
 	strbuf_reset(tmp);
 	strbuf_add(tmp, filename, dirlen);
 	strbuf_addstr(tmp, "tmp_obj_XXXXXX");
-	fd = git_mkstemp_mode(tmp->buf, 0444);
+	fd = git_mkstemp_mode(tmp->buf, 0666);
 	if (fd < 0 && dirlen && errno == ENOENT) {
 		/*
 		 * Make sure the directory exists; note that the contents
@@ -2192,7 +2192,7 @@ static int create_tmpfile(struct strbuf *tmp, const char *filename)
 
 		/* Try again */
 		strbuf_addstr(tmp, "/tmp_obj_XXXXXX");
-		fd = git_mkstemp_mode(tmp->buf, 0444);
+		fd = git_mkstemp_mode(tmp->buf, 0666);
 	}
 	return fd;
 }
